@@ -15,17 +15,36 @@ export default function HomePage() {
     setUsers(data)
   }
 
+  async function handleCreateFakeUsers() {
+    const res = await fetch("/api/users", { method: "POST" })
+    if (!res.ok) {
+      alert("Erreur : " + (await res.json()).error)
+      return
+    }
+    const data = await res.json()
+    setUsers(data)
+  }
+
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-xl mx-auto">
         <h1 className="mb-4 text-2xl font-bold">Liste d’utilisateurs</h1>
 
-        <button
-          onClick={handleFetchUsers}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Charger 5 utilisateurs
-        </button>
+        <div className="space-x-4">
+          <button
+            onClick={handleFetchUsers}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Charger la liste (GET)
+          </button>
+
+          <button
+            onClick={handleCreateFakeUsers}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            Créer 5 utilisateurs (POST)
+          </button>
+        </div>
 
         <ul className="mt-6 space-y-3">
           {users.map((u) => (
