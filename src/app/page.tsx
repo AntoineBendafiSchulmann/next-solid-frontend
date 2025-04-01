@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import { User } from "@/types/user"
 
 export default function HomePage() {
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<User[]>([])
 
   async function handleFetchUsers() {
     const res = await fetch("/api/users")

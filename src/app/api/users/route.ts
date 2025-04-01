@@ -5,7 +5,7 @@ import { UserCreationService } from "@/services/userCreationService"
 const userRetrievalService = new UserRetrievalService()
 const userCreationService = new UserCreationService()
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const allUsers = await userRetrievalService.getAllUsers()
     return NextResponse.json(allUsers, { status: 200 })
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const newUsers = await userCreationService.createFakeUsers()
     return NextResponse.json(newUsers, { status: 201 })
