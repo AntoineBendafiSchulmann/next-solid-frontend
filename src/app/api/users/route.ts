@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { UserRetrievalService } from "@/services/userRetrievalService"
 import { UserCreationService } from "@/services/userCreationService"
 
