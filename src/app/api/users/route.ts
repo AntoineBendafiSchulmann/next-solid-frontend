@@ -1,19 +1,24 @@
 import { NextRequest, NextResponse } from "next/server"
-import { generateFakeUsers } from "@/services/fakerService"
-import { usersSchema } from "@/validation/userSchema"
-import { prisma } from "@/services/db"
+import { UserRetrievalService } from "@/services/userRetrievalService"
+import { UserCreationService } from "@/services/userCreationService"
+
+const userRetrievalService = new UserRetrievalService()
+const userCreationService = new UserCreationService()
 
 export async function GET(req: NextRequest) {
-    const users = generateFakeUsers(5)
+  try {
+    const allUsers = await userRetrievalService.getAllUsers()
+    return NextResponse.json(allUsers, { status: 200 })
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
+  }
+}
 
-    const parseResult = usersSchema.safeParse(users)
-    if (!parseResult.success) {
-        return NextResponse.json({ error: parseResult.error.message }, { status: 400 })
-    }
-
-    //await prisma.user.deleteMany()
-    await prisma.user.createMany({ data: parseResult.data })
-
-    const allUsersInDB = await prisma.user.findMany()
-    return NextResponse.json(allUsersInDB, { status: 200 })
+export async function POST(req: NextRequest) {
+  try {
+    const newUsers = await userCreationService.createFakeUsers()
+    return NextResponse.json(newUsers, { status: 201 })
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 400 })
+  }
 }
